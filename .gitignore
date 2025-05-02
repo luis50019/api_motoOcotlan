@@ -1,0 +1,46 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+
+# Dependencias de Node.js
+node_modules/
+
+# Archivos de entorno
+.env
+
+# Archivos de compilación
+dist/
+build/
+
+# Archivos temporales de editores
+*.swp
+*.swo
+*.tmp
+
+# Carpetas de IDEs comunes
+.vscode/
+.idea/
+
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Archivos de C/C++
+*.o
+*.obj
+*.exe
+
+# Archivos de sistema operativo
+ehthumbs.db
+Icon?
