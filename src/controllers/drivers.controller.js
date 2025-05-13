@@ -1,8 +1,6 @@
-import drivers from "../model/drivers.model.js";
-import { registerValidate, loginValidate } from "../schemas/authSchema";
+import { registerValidate, loginValidate } from "../schemas/authSchema.js";
 import ErrorAuth from "../erros/errorAuht.js";
-import { hashPassword } from "../bcrypt/bcrypt.js";
-import { createAccessToken } from "../jwt/jwt.js";
+import DriverService from "../services/driver.services.js";
 
 class driverController {
   static async registerNewDrivers(req, res) {
@@ -13,43 +11,23 @@ class driverController {
         throw new ErrorAuth(
           "Error en la validacion de los datos",
           400,
-          infoValid.error.issues,
+          infoValid.error.issues
         );
       }
-
       //validate if the phone already exists
-
-      const phoneAlreadyExists = await drivers.findOne({
-        phone_number: req.body.phone,
-      });
-
-      if (phoneAlreadyExists) {
-        throw new ErrorAuth("Error el telefono ya existe", 409, [
-          { path: "phone", message: "El telefono ya existe" },
-        ]);
-      }
-
-      const passwordHash = await hashPassword(req.body.password);
-
-      const newDriver = new drivers({
-        name: req.body.username,
-        email: req.body.email,
-        phone_number: req.body.phone,
-        password: passwordHash,
-      });
-
-      const dirver = await newDriver.save();
+      const driver = await DriverService.addNewDriver(req.body);
 
       res.status(201).json({
         message: "El conductor fue registrado correctamente",
         driver: {
-          id: dirver._id,
-          name: dirver.name,
-          email: dirver.email,
-          phone_number: dirver.phone_number,
+          id: driver._id,
+          name: driver.name,
+          email: driver.email,
+          phone_number: driver.phone_number,
         },
       });
     } catch (error) {
+      console.log(error);
       if (error instanceof ErrorAuth) {
         return res.status(error.statusCode).json({
           message: error.message,
@@ -65,4 +43,74 @@ class driverController {
       });
     }
   }
+
+  //get one driver
+  static async DriverById(req, res) {
+    try {
+      const { id } = req.params;
+      const infoDriver = await DriverService.getDriverByID(id);
+      res.status(200).json({ data: infoDriver });
+    } catch (error) {
+      console.log(error);
+      if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(500).json({ message: error.message, });
+    }
+  }
+
+  //get all drivers
+  static async getAllDrivers(req, res) {
+    try {
+      const infoDrivers = await DriverService.getAllDrivers();
+      res.status(200).json({ data: infoDrivers });
+    } catch (error) {
+      if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getBetterDrivers(req, res) {
+    try {
+      const infoDrivers = await DriverService.BettersDrivers();
+      console.log(infoDrivers);
+      res.status(200).json({ data: infoDrivers });
+    } catch (error) {
+      console.log(error);
+      if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getCommentsDriver(req,res){
+    try{
+      const {id }=req.params;
+      const infoComments = await DriverService.ComentsByDriver(id);
+      res.status(200).json({data:infoComments});
+    }catch(error){
+      if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(404).json({ message: error.message });
+    }
+  }
+
 }
+
+export default driverController;

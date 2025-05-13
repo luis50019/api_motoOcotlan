@@ -1,15 +1,18 @@
 import mongoose from "mongoose";
 
-const ReviewSchema = new Schema(
+const ReviewSchema = new mongoose.Schema(
   {
     participants: {
-      driver_id: { type: Schema.Types.ObjectId, ref: "Driver", required: true },
-      passenger_id: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+      driver_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "drivers",
         required: true,
       },
-      ride_id: { type: Schema.Types.ObjectId, ref: "Ride", required: true },
+      passenger_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        required: true,
+      },
     },
     content: {
       comment: { type: String, required: true },
@@ -20,42 +23,22 @@ const ReviewSchema = new Schema(
           vehicle: { type: Number, min: 1, max: 5 },
           driving: { type: Number, min: 1, max: 5 },
         },
+        
       },
       photos: [{ type: String }], // Array of image URLs
     },
     metadata: {
       date: { type: Date, default: Date.now },
       device: {
-        type: { type: String, enum: ["Android", "iOS", "Web"], required: true },
-        app_version: { type: String, required: true },
+        type: { type: String, enum: ["Android", "iOS", "Web"] },
+        app_version: { type: String, },
       },
       location: {
         coordinates: {
-          lat: { type: Number, required: true },
-          lng: { type: Number, required: true },
+          lat: { type: Number },
+          lng: { type: Number },
         },
         accuracy: { type: Number }, // meters
-      },
-    },
-    moderation: {
-      status: {
-        type: String,
-        enum: ["pending", "approved", "rejected"],
-        default: "pending",
-      },
-      rejection_reason: { type: String },
-      moderator_id: { type: Schema.Types.ObjectId, ref: "Moderator" },
-      review_date: { type: Date },
-    },
-    response: {
-      driver: {
-        text: { type: String },
-        date: { type: Date },
-      },
-      support: {
-        text: { type: String },
-        agent_id: { type: Schema.Types.ObjectId, ref: "SupportAgent" },
-        date: { type: Date },
       },
     },
     visibility: {
@@ -70,7 +53,7 @@ const ReviewSchema = new Schema(
   {
     timestamps: true,
     collection: "reviews",
-  },
+  }
 );
 
-export default mongoose.model("Review", ReviewSchema);
+export default mongoose.model("reviews", ReviewSchema);

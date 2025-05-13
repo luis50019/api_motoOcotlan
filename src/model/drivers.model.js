@@ -1,11 +1,22 @@
 import mongoose from "mongoose";
 
 const driverSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-  phone_number: String,
-  password: { type: String, required: true },
-  email: { type: String, required: true },
+  basic_info: {
+    name: { type: String, required: true },
+    password: { type: String, required: true },
+    email: {
+      address: { type: String, lowercase: true, trim: true },
+      verified: { type: Boolean, default: false },
+    },
+    phone: {
+      number: { type: String, required: true },
+      country_code: { type: String, default: "+52" },
+      verified: { type: Boolean, default: false },
+    },
+    age: { type: Number, min: 18 },
+    profile_picture: String,
+    language_preference: { type: String, default: "es_MX" },
+  },
   state_driver: {
     type: String,
     enum: ["active", "inactive", "suspended"],
@@ -31,6 +42,13 @@ const driverSchema = new mongoose.Schema({
     },
   },
   rating: Number,
+  types_comment:{
+    exellentComments: Number,
+    goodGrades: Number,
+    neutralComments: Number,
+    regularCommnets: Number,
+    badComments: Number,
+  },
   unit: {
     number: String,
     type: { type: String, enum: ["sedan", "SUV", "motorcycle"] },
