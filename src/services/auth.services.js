@@ -45,6 +45,8 @@ class AuthServices {
             verified: false,
           },
           password: passwordHash,
+          profile_picture:
+            "https://res.cloudinary.com/dzqytawx9/image/upload/v1747181551/ylyhxbxyvaa4xxbuvryd.png",
         },
       });
 

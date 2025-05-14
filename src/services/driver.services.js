@@ -38,6 +38,7 @@ class DriverService {
             verified: false,
           },
           password: passwordHash,
+          profile_picture:driver.profile_picture,
         },
         rating: 1,
       });
@@ -79,9 +80,7 @@ class DriverService {
       const coments = await reviews.find({ "participants.driver_id": id });
 
       if (coments.length === 0) {
-        throw new ErrorInfo("No hay comentarios", 404, [
-          { path: "coments", message: "No hay comentarios" },
-        ]);
+        return [];
       }
       return coments;
     } catch (error) {
@@ -100,10 +99,9 @@ class DriverService {
 
   static async BettersDrivers(){
     try {
-      const betterDrivers = await drivers.find().sort({rating: 1}).limit(3);
+      const betterDrivers = await drivers.find().sort({rating: -1}).limit(1);
       return betterDrivers;
     } catch (error) {
-      console.log(error);
       if (error instanceof ErrorInfo) {
         throw new ErrorInfo(error.message, 404, error.errorsMessages);
       }
@@ -120,7 +118,6 @@ class DriverService {
       const driversFound = await drivers.find();
       return driversFound;
     } catch (error) {
-      console.log(error);
       if (error instanceof ErrorInfo) {
         throw new ErrorInfo(error.message, 404, error.errorsMessages);
       }

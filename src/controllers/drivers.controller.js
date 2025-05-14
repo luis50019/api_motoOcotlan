@@ -48,8 +48,16 @@ class driverController {
   static async DriverById(req, res) {
     try {
       const { id } = req.params;
-      const infoDriver = await DriverService.getDriverByID(id);
-      res.status(200).json({ data: infoDriver });
+
+      const [infoDriver, reviewDriver] = await Promise.all([
+        DriverService.getDriverByID(id),
+        DriverService.ComentsByDriver(id),
+      ]);
+
+      res.status(200).json({
+        data: infoDriver,
+        reviews: reviewDriver,
+      });
     } catch (error) {
       console.log(error);
       if (error instanceof ErrorAuth) {
@@ -58,7 +66,7 @@ class driverController {
           errors: error.getErrorsMessages(),
         });
       }
-      res.status(500).json({ message: error.message, });
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -81,10 +89,8 @@ class driverController {
   static async getBetterDrivers(req, res) {
     try {
       const infoDrivers = await DriverService.BettersDrivers();
-      console.log(infoDrivers);
       res.status(200).json({ data: infoDrivers });
     } catch (error) {
-      console.log(error);
       if (error instanceof ErrorAuth) {
         return res.status(error.statusCode).json({
           message: error.message,
@@ -95,12 +101,12 @@ class driverController {
     }
   }
 
-  static async getCommentsDriver(req,res){
-    try{
-      const {id }=req.params;
+  static async getCommentsDriver(req, res) {
+    try {
+      const { id } = req.params;
       const infoComments = await DriverService.ComentsByDriver(id);
-      res.status(200).json({data:infoComments});
-    }catch(error){
+      res.status(200).json({ data: infoComments });
+    } catch (error) {
       if (error instanceof ErrorAuth) {
         return res.status(error.statusCode).json({
           message: error.message,
@@ -110,7 +116,6 @@ class driverController {
       res.status(404).json({ message: error.message });
     }
   }
-
 }
 
 export default driverController;
