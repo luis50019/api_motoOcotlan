@@ -12,7 +12,7 @@ class ErrorInfo extends Error {
 
     for (let i = 0; i < this.errorsMessages.length; i++) {
       errosInfo.push({
-        path: this.errorsMessages[i].path?.[0] ?? "unknown",
+        path: this.errorsMessages[i].path ?? "unknown",
         message: this.errorsMessages[i].message || "Error desconocido",
       });
     }

@@ -1,4 +1,4 @@
-import ErrorInfo from "../erros/errorInfo.js";
+import ErrorInfo from "../errors/errorInfo.js";
 import ReviewsService from "../services/reviews.services.js";
 import validateReviews from "../schemas/reviews.schema.js";
 class ReviewsController{
@@ -16,7 +16,6 @@ class ReviewsController{
       }
       res.status(201).json({data:result,message:"Comentario registrado"});
     } catch (error) {
-      console.log(error);
       if(error instanceof ErrorInfo){
         res.status(error.code).json({error:error.message});
       }else{
@@ -36,7 +35,6 @@ class ReviewsController{
       }
       res.status(200).json({data:result,message:"Comentarios obtenidos"});
     } catch (error) {
-      console.log(error);
       if(error instanceof ErrorInfo){
         res.status(error.code).json({error:error.message});
       }else{

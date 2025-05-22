@@ -7,6 +7,10 @@ routerDriver.get("/better", driverController.getBetterDrivers);
 routerDriver.get("/:id",driverController.DriverById);
 routerDriver.get("/",driverController.getAllDrivers);
 routerDriver.get("/comments/:id",driverController.getCommentsDriver);
+routerDriver.get("/reservations/:id",driverController.getReservations);
+routerDriver.put("/reservations/accept/:id", driverController.acceptReservation);
+routerDriver.put("/reservations/cancel/:id", driverController.cancelReservation);
+routerDriver.put("/reservations/finish/:id", driverController.finishReservation);
 
 
 export default routerDriver;

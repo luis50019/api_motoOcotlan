@@ -1,4 +1,4 @@
-import ErrorAuth from "../erros/errorAuht.js";
+import ErrorAuth from "../errors/errorAuht.js";
 import AuthServices from "../services/auth.services.js";
 
 class Auth {

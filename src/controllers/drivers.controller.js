@@ -1,6 +1,7 @@
 import { registerValidate, loginValidate } from "../schemas/authSchema.js";
-import ErrorAuth from "../erros/errorAuht.js";
+import ErrorAuth from "../errors/errorAuht.js";
 import DriverService from "../services/driver.services.js";
+import ErrorInfo from "../errors/errorInfo.js";
 
 class driverController {
   static async registerNewDrivers(req, res) {
@@ -108,6 +109,86 @@ class driverController {
       res.status(200).json({ data: infoComments });
     } catch (error) {
       if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(404).json({ message: error.message });
+    }
+  }
+
+  static async getReservations(req, res) {
+    try {
+      const { id } = req.params;
+
+      const allReservations = await DriverService.servicesPrivates(id);
+
+      res.status(200).json({ data: allReservations });
+    } catch (error) {
+      if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(404).json({ message: error.message });
+    }
+  }
+
+  static async acceptReservation(req, res) {
+    try {
+      const { id } = req.params;
+      const response = await DriverService.accept(id);
+      if (!response.status) {
+        throw new ErrorInfo("No se pudo aceptar la reserva", 400, [
+          { path: "unknown", message: "Error desconocido" },
+        ]);
+      }
+      res.status(200).json({ message: response.message });
+    } catch (error) {
+      if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(404).json({ message: error.message });
+    }
+  }
+  static async cancelReservation(req, res) {
+    try {
+      const { id } = req.params;
+      const response = await DriverService.cancel(id);
+      if (!response.status) {
+        throw new ErrorInfo("No se pudo aceptar la reserva", 400, [
+          { path: "unknown", message: "Error desconocido" },
+        ]);
+      }
+      res.status(200).json({ message: response.message });
+    } catch (error) {
+      if (error instanceof ErrorAuth) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(404).json({ message: error.message });
+    }
+  }
+
+  static async finishReservation(req, res) {
+    try {
+      const { id } = req.params;
+      const response = await DriverService.finish(id);
+      if (!response.status) {
+        throw new ErrorInfo("No se pudo aceptar la reserva", 400, [
+          { path: "unknown", message: "Error desconocido" },
+        ]);
+      }
+      res.status(200).json({ message: response.message });
+    } catch (error) {
+      if (error instanceof ErrorInfo) {
         return res.status(error.statusCode).json({
           message: error.message,
           errors: error.getErrorsMessages(),

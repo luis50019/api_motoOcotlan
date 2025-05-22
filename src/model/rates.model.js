@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Sub-schema for customized pricing
-const CustomPricingSchema = new Schema({
+const CustomPricingSchema = new mongoose.Schema({
   startTime: { type: String, required: true }, // Format: "HH:MM"
   endTime: { type: String, required: true }, // Format: "HH:MM"
   price: { type: Number, required: true },
@@ -14,25 +14,15 @@ const CustomPricingSchema = new Schema({
 });
 
 // Sub-schema for stop pricing
-const StopPricingSchema = new Schema({
+const StopPricingSchema = new mongoose.Schema({
   pricePerStop: { type: Number, required: true },
-  maxStopsAllowed: { type: Number, default: 3 },
+  maxStopsAllowed: { type: Number, default: 5 },
   isActive: { type: Boolean, default: true },
 });
 
 // Main pricing model schema
-const PricingModelSchema = new Schema(
+const PricingModelSchema = new mongoose.Schema(
   {
-    originPlaceId: {
-      type: Schema.Types.ObjectId,
-      ref: "places",
-      required: true,
-    },
-    destinationPlaceId: {
-      type: Schema.Types.ObjectId,
-      ref: "places",
-      required: true,
-    },
     pricingType: {
       global: {
         price: { type: Number },
@@ -44,10 +34,10 @@ const PricingModelSchema = new Schema(
     acceptedPaymentMethods: {
       type: [String],
       enum: ["cash", "card", "mobile_payment"],
-      default: ["mobile_payment"],
+      default: ["cash"],
     },
-    estimatedTime: { type: String }, // Format: "HH:MM"
-    approximateDistance: { type: Number }, // in kilometers
+    distanceMin: { type: Number, required: true },
+    distanceMax: { type: Number, required: true },
     isActive: { type: Boolean, default: true },
     lastUpdated: { type: Date, default: Date.now },
   },

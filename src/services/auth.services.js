@@ -1,4 +1,4 @@
-import ErrorAuth from "../erros/errorAuht.js";
+import ErrorAuth from "../errors/errorAuht.js";
 import { loginValidate, registerValidate } from "../schemas/authSchema.js";
 import { createAccessToken } from "../jwt/jwt.js";
 import users from "../model/client.model.js";

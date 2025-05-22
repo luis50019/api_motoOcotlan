@@ -1,5 +1,5 @@
 import validateReviews from "../schemas/reviews.schema.js";
-import ErrorInfo from "../erros/errorInfo.js";
+import ErrorInfo from "../errors/errorInfo.js";
 import reviews from "../model/coment.model.js";
 import drivers from "../model/drivers.model.js"
 

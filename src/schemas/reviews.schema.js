@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { isValidObjectId } from "mongoose"; // Corregido: Usar isValidObjectId de mongoose
+import { isValidObjectId } from "mongoose";
 
 const reviewsSchema = z.object({
   idUser: z.string().refine((value) => isValidObjectId(value), {
