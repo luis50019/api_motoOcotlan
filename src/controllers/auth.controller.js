@@ -45,6 +45,7 @@ class Auth {
       console.log(infoUser);
       res.status(200).json({
         user: infoUser.infoUserFound.basic_info,
+        id_user: infoUser.infoUserFound._id,
         type: infoUser.type,
         access_token: { name: "access_token", value: infoUser.token },
         message: "Inicio de sesion exitoso",
