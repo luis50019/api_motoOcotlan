@@ -71,6 +71,31 @@ class reservationController {
       });
     }
   }
+
+  static async findReservation(req,res){
+    try {
+      const {id} = req.params;
+      const response = await ReservationServices.infoReservation(id);
+      if (!response.status) {
+        throw new ErrorInfo("Error al encontrar la reserva", 400, [
+          { path: "Error", message: "No se logro encontrar la reserva" },
+        ]);
+      }
+      res.status(200).json(response);
+    } catch (error) {
+      if (error instanceof ErrorInfo) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          errors: error.getErrorsMessages(),
+        });
+      }
+      res.status(500).json({
+        message: "Error del servidor",
+        errors: [{ path: "server", message: error.message }],
+      });
+    }
+  }
+  
 }
 
 export default reservationController;

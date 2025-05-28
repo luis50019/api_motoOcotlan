@@ -109,6 +109,31 @@ class ReservationServices{
       throw new Error("Error al obtener reservaciones");
     }
   }
+
+  static async infoReservation(id){
+    try{
+      const response = await reservations.findById(id);
+      if(!response){
+        throw new ErrorInfo("No se encontro la reservacion",404,[
+          {path:"reservations",message:"No se encontro la reservacion"}]);
+      }
+      return {message:"reservacion encontrada",status:true,data:response};
+    }catch(error){
+      if (error instanceof ErrorInfo) {
+        throw new ErrorInfo(
+          error.message,
+          error.statusCode,
+          error.getErrorsMessages);
+      }
+      if (error instanceof mongoose.Error) {
+        throw new ErrorInfo("Error al obtener reservaciones", 500, [
+          { path: "reservations", message: "Error al obtener reservaciones" },
+        ]);
+      }
+      throw new Error("Error al obtener reservaciones");
+    }
+  }
+
   
   //metodo para cancelar viaje por parte del usaurios
   //metodo para finalizar viaje por parte del conductor
