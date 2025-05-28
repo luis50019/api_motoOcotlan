@@ -89,13 +89,6 @@ class AuthServices {
         ],
       });
 
-      if (!userFound && !driver) {
-        throw new ErrorAuth("Datos incorrectos", 404, [
-          { path: "name", message: "Verifique el nombre" },
-          { path: "phone", message: "Vefifique el número" },
-        ]);
-      }
-
       const infoUserFound = userFound || driver;
 
       const passwordIsValid = await passwordValidate(
