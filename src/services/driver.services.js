@@ -137,7 +137,7 @@ class DriverService {
       throw new Error("Error al obtener a los conductores");
     }
   }
-  
+
   static async servicesPrivates(id) {
     try {
       const services = await reservations
@@ -145,6 +145,11 @@ class DriverService {
           driver: id,
           "state.general": "pendiente",
         })
+        .populate("passage") // Trae la información del pasajero
+        .populate("driver") // Trae la información del conductor
+        .populate("rate") // Trae la información de la tarifa
+        .exec(); // Ejecuta la consulta
+
       if (services.length === 0) {
         return {
           message: "No hay servicios viajes reservados",
@@ -152,6 +157,7 @@ class DriverService {
           data: [],
         };
       }
+
       return { message: "Servicios reservados", status: true, data: services };
     } catch (error) {
       if (error instanceof ErrorInfo) {
@@ -168,6 +174,7 @@ class DriverService {
       throw new Error("Error al obtener los viajes reservados");
     }
   }
+
   static async accept(id) {
     try {
       const response = await reservations.findByIdAndUpdate(
@@ -200,10 +207,13 @@ class DriverService {
   static async cancel(id) {
     try {
       const response = await reservations.findByIdAndUpdate(
-        id,{$set: {
+        id,
+        {
+          $set: {
             "state.general": "cancelado",
             "state.details.detail": "cancelado por conductor",
-          },},
+          },
+        },
         { new: true }
       );
       if (!response) {
