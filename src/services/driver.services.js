@@ -147,7 +147,7 @@ class DriverService {
         })
         .populate("users") // Trae la información del pasajero
         .populate("drivers") // Trae la información del conductor
-        .populate("rate") // Trae la información de la tarifa
+        .populate("rates") // Trae la información de la tarifa
         .exec(); // Ejecuta la consulta
 
       if (services.length === 0) {
