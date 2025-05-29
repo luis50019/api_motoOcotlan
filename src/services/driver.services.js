@@ -146,7 +146,7 @@ class DriverService {
           "state.general": "pendiente",
         })
         .populate("users") // Trae la información del pasajero
-        .populate("driver") // Trae la información del conductor
+        .populate("drivers") // Trae la información del conductor
         .populate("rate") // Trae la información de la tarifa
         .exec(); // Ejecuta la consulta
 
