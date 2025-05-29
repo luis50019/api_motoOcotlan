@@ -82,6 +82,14 @@ class AuthServices {
         ],
       });
 
+      if (!userFound) {
+        throw new ErrorAuth("Error el usuario no esta registrado", 404, [
+          { path: "username", message: "Verifique su nombre de usuario" },
+          { path: "phone", message: "Verifique su numero de telefono" },
+        ]);
+
+      }
+
       const driver = await drivers.findOne({
         $and: [
           { "basic_info.name": user.username },
