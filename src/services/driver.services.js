@@ -259,6 +259,26 @@ class DriverService {
       throw new Error("Error al obtener a los conductores");
     }
   }
+  static async verifiedCode(code,idReservation){
+      // Busca la reservación por ID
+    const reservation = await reservations.findById(idReservation);
+
+    if (!reservation) {
+      console.log('Reservación no encontrada');
+      return false;
+    }
+
+    // Compara el código recibido con el almacenado
+    if (reservation.security.codeVerification === code) {
+      console.log('Código correcto');
+      return true;
+    } else {
+      console.log('Código incorrecto');
+      return false;
+    }
+  } catch (error) {
+    throw new Error("codigo incorrecto");
+  }
 }
 
 export default DriverService;

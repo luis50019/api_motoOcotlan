@@ -11,6 +11,7 @@ routerDriver.get("/reservations/:id",driverController.getReservations);
 routerDriver.put("/reservations/accept/:id", driverController.acceptReservation);
 routerDriver.put("/reservations/cancel/:id", driverController.cancelReservation);
 routerDriver.put("/reservations/finish/:id", driverController.finishReservation);
+routerDriver.post("/reservations/verify/", driverController.verify);
 
 
 export default routerDriver;

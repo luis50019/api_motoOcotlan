@@ -197,6 +197,24 @@ class driverController {
       res.status(404).json({ message: error.message });
     }
   }
+
+  static async verify(req,res){
+    try{
+      const {idReservation,codeReservation} = req.body;
+      const response = DriverService.verifiedCode(
+        codeReservation,
+        idReservation
+      );
+
+      if(response == true){
+        res.status(200).json({message:"codigo correcto"});
+        return;
+      }
+      throw new ErrorInfo("codigo incorrecto",400,[{path:"unknown",message:"Error desconocido"}]);
+    }catch(error){
+        res.status(400).json({message:"codigo incorrecto"});
+    }
+  }
 }
 
 export default driverController;
